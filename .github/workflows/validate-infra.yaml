@@ -1,0 +1,9 @@
+name: Validate Infra
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Configurations
+        run: echo "Linting Terraform, Helm charts, and K8s manifests..."

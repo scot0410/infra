@@ -1,0 +1,54 @@
+# Cluster Deployment Coordinates
+schedule: "0 * * * *" # Triggers at the start of every hour
+concurrencyPolicy: Forbid # Prevents overlapping jobs if a execution hangs
+backoffLimit: 3 # Maximum retries before declaring a Job execution failed
+
+# History Retentions
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 5
+
+# Hard Application Timeout Constraints
+activeDeadlineSeconds: 300 # Terminate the container forcefully if stuck over 5 mins
+
+# Container Engine Blueprint
+image:
+  repository: health-hazard-events
+  tag: latest
+  pullPolicy: Never
+
+# Structural Resource Allocation Profiles
+#resources:
+#  requests:
+#    cpu: "250m"
+#    memory: "256Mi"
+#  limits:
+#    cpu: "500m"
+#    memory: "512Mi"
+
+# Application Environment Variables for Spring Boot 4 relaxed binding
+env:
+  springProfile: "default"
+#  kafkaBootstrapServers: "dev-kafka-cluster.infra.svc.cluster.local:9092"
+#  kafkaBootstrapServers: "dev-kafka-bootstrap.messaging.svc.cluster.local:9092"
+  kafkaRetries: "5"
+  kafkaMaxBlockMs: "5000"
+  kafkaDeliveryTimeoutMs: "15000"
+  postgresCluster:
+    name: dev-postgres-cluster
+    instances: 3
+    storageSize: 2Gi
+    writeServiceEndpoint: "postgres-rw.database.svc.cluster.local"
+
+  kafkaCluster:
+    name: dev-kafka-cluster
+    replicas: 3
+    bootstrapEndpoint: "dev-kafka-bootstrap.messaging.svc.cluster.local:9092"
+
+
+# Node Placement and Security Profiles
+#nodeSelector: {}
+#tolerations: []
+#affinity: {}
+
+apiKeys:
+  thirdPartyKey: ""

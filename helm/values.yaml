@@ -1,0 +1,10 @@
+postgresCluster:
+  name: dev-postgres-cluster
+  instances: 3
+  storageSize: 2Gi
+  writeServiceEndpoint: "postgres-rw.database.svc.cluster.local"
+
+kafkaCluster:
+  name: dev-kafka-cluster
+  replicas: 3
+  bootstrapEndpoint: "dev-kafka-bootstrap.messaging.svc.cluster.local:9092"

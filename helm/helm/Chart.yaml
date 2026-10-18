@@ -1,0 +1,7 @@
+apiVersion: v2
+name: spring-boot-cron-chart
+description: Production-grade Helm chart for a stateless Spring Boot 4 database-to-Kafka synchronization CronJob.
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+#icon: https://githubusercontent.com # Adds a clean K8s icon
