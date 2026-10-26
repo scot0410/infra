@@ -1,11 +1,33 @@
 # =====================================================================
-# Packing local Lambda into zip package
+# 1. Automatically run pip install when requirements.txt OR index.py changes
+# =====================================================================
+resource "null_resource" "install_dependencies" {
+  triggers = {
+    requirements_hash = filemd5("${path.module}/../serverless/requirements.txt")
+    script_hash       = filemd5("${path.module}/../serverless/index.py") # 👈 ADD THIS LINE
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      mkdir -p ${path.module}/dist
+      pip install -r ${path.module}/../serverless/requirements.txt -t ${path.module}/dist --upgrade
+      cp ${path.module}/../serverless/index.py ${path.module}/dist/
+    EOT
+  }
+}
+
+
+# =====================================================================
+# 2. Packing compiled folder into zip package
 # =====================================================================
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "${path.module}/../localstack/index.py"
+  source_dir  = "${path.module}/dist" # 👈 Changed from source_file to source_dir
   output_path = "${path.module}/function.zip"
+
+  depends_on = [null_resource.install_dependencies] # 👈 Ensures pip install finishes first
 }
+
 
 # =====================================================================
 # INGESTION LAYER (LAMBDA)

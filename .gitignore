@@ -1,3 +1,17 @@
 .env
-.terraform/
+
+# Local compilation dependencies and binaries
+terraform/dist/
+terraform/function.zip
+terraform/function_*.zip
+
+# Terraform State files (Never commit these!)
 *.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+
+# System / IDE Files
+.DS_Store
+.idea/
+.vscode/

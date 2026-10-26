@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 echo "=========== INITIALIZING LOCALSTACK RESOURCES ==========="
-localstack start
+docker-compose up
 
 echo "=========== CREATING INFRASTRUCTURE RESOURCES ==========="
 terraform init

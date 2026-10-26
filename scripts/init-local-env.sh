@@ -2,8 +2,8 @@
 set -e
 
 echo "🚀 Starting LocalStack via CLI..."
-localstack start -d
-localstack wait -t 30
+serverless start -d
+serverless wait -t 30
 
 echo "⚙️  Deploying serverless architecture layer with Terraform..."
 cd "$(dirname "$0")/../terraform"

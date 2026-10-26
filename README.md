@@ -1,3 +1,22 @@
+# Infra 
+This repo contains the infra for the Lumina app. 
+
+The following services are in use:
+
+Loci Local Stack
+- Amazon EventBridge 
+- SQS
+- AWS Lambda
+- Dynamo DB
+
+# Quickstart
+1. Start local AWS services
+```shell
+docker-compose up
+```
+1. Run `./start.sh` to start localstack and init terraform plan.
+2. Navigate to loci logs -> http://localhost:4500/console/aws
+
 ## Architecture
 
 ┌──────────────────────┐      Triggers      ┌───────────────────┐      Fetches Data      ┌──────────────────┐
@@ -19,24 +38,6 @@
 │ (NoSQL Cloud DB)     │
 └──────────────────────┘
 
-The Empty Architecture Layout Created:
-.github/workflows/: For your CI/CD automation rules
-.docker-compose/: For managing your local third-party systems like LocalStack
-.localstack/: For housing your raw Lambda Python code files
-.terraform/: For managing your infrastructural state and provider scripts
-.helm/: For crafting configuration variables and templates for your cluster
-.kubernetes/: For housing basic YAML specifications like your Spring Boot CronJob
-.scripts/: For writing custom terminal hooks to automate starting your environment.
-
-![img.png](img.png)
-
-
-docker run -d \
---name localstack \
--p 4566:4566 \
--v /var/run/docker.sock:/var/run/docker.sock \
-localstack/localstack:4.4.0
-
 localstack status
 
 curl http://localhost:4566/_localstack/health
@@ -52,12 +53,12 @@ terraform plan
 terraform apply -auto-approve
 
 # 4. Check resources
-`awslocal dynamodb list-tables`
-`awslocal dynamodb describe-table --table-name ProductRecalls`
-`awslocal lambda list-functions`
-`awslocal events list-event-buses`
-`awslocal events list-rules --event-bus-name app-event-bus`
-`awslocal events list-targets-by-rule --rule route-spring-events-to-lambda --event-bus-name app-event-bus`
+`aws dynamodb list-tables`
+`aws dynamodb describe-table --table-name product-recalls"`
+`aws lambda list-functions`
+`aws events list-event-buses`
+`aws events list-rules --event-bus-name app-event-bus`
+`aws events list-targets-by-rule --rule route-spring-events-to-lambda --event-bus-name app-event-bus`
 
 # 5. Logs
 `docker logs -f localstack`
